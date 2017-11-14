@@ -17,7 +17,7 @@ case class CheckMkCheck(name: String,
     var isValid = false
     val hasSpace = " ".r
 
-    isValid = !hasSpace.findFirstIn(name).isEmpty
+    isValid = hasSpace.findFirstIn(name).isEmpty
     if (!isValid) {
       throw new IllegalArgumentException("""name can not have space.""")
     }
