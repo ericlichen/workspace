@@ -52,7 +52,7 @@ case class CheckMkCheck(name: String,
     checkValue match {
       case checkValue if (checkValue < warn) => "0"
       case checkValue if (checkValue >= warn && checkValue < crit) => "1"
-      case checkValue if (checkValue > crit) => "2"
+      case checkValue if (checkValue >= crit) => "2"
       case _ => "3"
     }
 
@@ -85,6 +85,7 @@ class CheckMkReturn (checks:Vector[CheckMkCheck]) {
 
   for (check <- checks) {
     println(check.name)
+    println(check.status)
   }
 }
 
