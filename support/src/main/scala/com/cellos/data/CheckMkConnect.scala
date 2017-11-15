@@ -5,6 +5,7 @@ package com.cellos.data.support
   */
 
 case class CheckMkCheck(name: String,
+                   varName: String,
                    checkValue: Double,
                    warn: Double,
                    crit: Double,
@@ -46,6 +47,17 @@ case class CheckMkCheck(name: String,
     isValid
   }
 
+  def status(): String = {
+    // The check result in Nagios convention: 0 for OK, 1 for WARNING, 2 for CRITICAL and 3 for UNKNOWN
+    checkValue match {
+      case checkValue if (checkValue < warn) => "0"
+      case checkValue if (checkValue >= warn && checkValue < crit) => "1"
+      case checkValue if (checkValue > crit) => "2"
+      case _ => "3"
+    }
+
+  }
+
   isValidName()
   isValidValue()
 
@@ -59,7 +71,21 @@ class CheckMkReturn (checks:Vector[CheckMkCheck]) {
     Performance data
     Check output
    */
+  def checkOutput (check:CheckMkCheck):String = {
+    (check.status + ' ' 
+      + check.name + ' ' 
+      +  check.varName + '=' 
+      + check.checkValue + ';' 
+      + check.warn + ';' 
+      + check.crit + ';' 
+      + check.min + ';' 
+      + check.max + ' '
+      + check.output)
+  }
 
+  for (check <- checks) {
+    println(check.name)
+  }
 }
 
 
