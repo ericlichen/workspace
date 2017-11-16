@@ -20,6 +20,7 @@
     <encoding>UTF-8</encoding>
     <scala.version>2.12.4</scala.version>
     <scala.compat.version>2.12</scala.compat.version>
+    <scoverage.plugin.version>1.3.0</scoverage.plugin.version>
   </properties>
   <dependencies>
     <dependency>
@@ -87,7 +88,6 @@
               <goal>testCompile</goal>
             </goals>
             <configuration>
-              <!-- <outputDir>${project.build.directory}/lib</outputDir> -->
               <compilerPlugins>
                 <compilerPlugin>
                   <groupId>com.artima.supersafe</groupId>
@@ -124,7 +124,6 @@
         <artifactId>scalatest-maven-plugin</artifactId>
         <version>1.0</version>
         <configuration>
-          <!-- <runpath>${project.build.outputDirectory}/lib</runpath> -->
           <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
           <junitxml>.</junitxml>
           <filereports>WDF TestSuite.txt</filereports>
@@ -138,6 +137,16 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+          <groupId>org.scoverage</groupId>
+          <artifactId>scoverage-maven-plugin</artifactId>
+          <version>${scoverage.plugin.version}</version>
+          <configuration>
+          <scalaVersion>${scala.version}</scalaVersion>
+          <!-- other parameters -->
+           </configuration>
+      </plugin>
+
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.0.2</version>
