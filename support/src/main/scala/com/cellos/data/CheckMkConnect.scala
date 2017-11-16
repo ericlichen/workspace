@@ -4,6 +4,9 @@ package com.cellos.data.support
   * @author ${user.name}
   */
 
+import util.Properties
+
+
 case class CheckMkCheck(name: String,
                    varName: String,
                    checkValue: Double,
@@ -18,7 +21,8 @@ case class CheckMkCheck(name: String,
     var isValid = false
     val hasSpace = " ".r
 
-    isValid = hasSpace.findFirstIn(name).isEmpty
+    isValid = (hasSpace.findFirstIn(name).isEmpty && hasSpace.findFirstIn(varName).isEmpty)
+
     if (!isValid) {
       throw new IllegalArgumentException("""name can not have space.""")
     }
@@ -63,7 +67,7 @@ case class CheckMkCheck(name: String,
 
 }
 
-class CheckMkReturn (checks:Vector[CheckMkCheck]) {
+class CheckMkPluginOutput (checks:Vector[CheckMkCheck]) {
   /*
   Output contains one or more lines with four space seperated columns:
     Status
@@ -71,10 +75,11 @@ class CheckMkReturn (checks:Vector[CheckMkCheck]) {
     Performance data
     Check output
    */
-  def checkOutput (check:CheckMkCheck):String = {
+
+  def checkOutput(check:CheckMkCheck):String = {
     (check.status + ' ' 
       + check.name + ' ' 
-      +  check.varName + '=' 
+      + check.varName + '=' 
       + check.checkValue + ';' 
       + check.warn + ';' 
       + check.crit + ';' 
@@ -83,10 +88,19 @@ class CheckMkReturn (checks:Vector[CheckMkCheck]) {
       + check.output)
   }
 
-  for (check <- checks) {
-    println(check.name)
-    println(check.status)
+  def checkCount():Int = {
+    checks.length
   }
+
+  def pluginOutput():String = {
+    
+    var output = ""
+
+    for (check <- checks) {
+      output = output + (checkOutput(check)) + Properties.lineSeparator
+    }
+
+    output
+  }
+  
 }
-
-
